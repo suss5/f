@@ -10,9 +10,39 @@
     c1.width = 700;
     c1.height = 3900;
 var name=prompt("Enter prompt")
-    for(i=100; i<3800; i+=100){
-      ct1.fillText("This is "+i,0,i)
+  
+
+function drawMultiLineText(context, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(' ');
+  let line = '';
+
+  for (let i = 0; i < words.length; i++) {
+    const testLine = line + words[i] + ' ';
+    const metrics = context.measureText(testLine);
+    const testWidth = metrics.width;
+
+    if (testWidth > maxWidth && i > 0) {
+      context.fillText(line, x, y);
+      line = words[i] + ' ';
+      y += lineHeight;
+    } else {
+      line = testLine;
     }
+  }
+
+  context.fillText(line, x, y);
+}
+
+const myString = "This is a sample text that needs to be split into multiple lines and it could be longer than this even, but who knows";
+const xPosition = 0;
+const yPosition = 100;
+const lineHeight = 20; // Adjust this value based on your font size
+const maxWidth=600
+ct1.font = '16px Arial'; // Set your desired font and size
+ct1.fillStyle = 'black'; // Set your desired text color
+
+drawMultiLineText(ct1, myString, xPosition, yPosition, maxWidth, lineHeight);
+
   </script>
   </body>
 </html>
