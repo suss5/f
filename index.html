@@ -1,1 +1,18 @@
-/
+<!DOCTYPE html>
+<html>
+<body>
+  <canvas id="can1"></canvas>
+  <script>
+    const c1 = document.getElementById('can1');
+    const ct1 = c1.getContext('2d');
+
+    // Set canvas dimensions
+    c1.width = 700;
+    c1.height = 3900;
+var name=prompt("Enter prompt")
+    for(i=100; i<3800; i+=100){
+      ct1.fillText("This is "+i,0,i)
+    }
+  </script>
+  </body>
+</html>
