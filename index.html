@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Disconnected Groups</title>
-</head>
+<html>
 <body>
 
 <script>
+
 function findDisconnectedGroups() {
   // Hardcoded input data (replace this with your actual input)
   const input = `
@@ -25,7 +21,7 @@ function findDisconnectedGroups() {
     rzs: qnr cmg lsr rsh
     frs: qnr lhk lsr
   `;
-  
+
   const connections = input.trim().split('\n');
   const graph = new Map();
 
@@ -73,42 +69,26 @@ function findDisconnectedGroups() {
 
   graph.forEach((connectedComponents, component) => {
     connectedComponents.forEach(connectedComponent => {
-      // Disconnect the component and check if the number of groups increases
-      graph.get(component).splice(graph.get(component).indexOf(connectedComponent), 1);
-      graph.get(connectedComponent).splice(graph.get(connectedComponent).indexOf(component), 1);
+      // Create copies of the graph for the iteration
+      const tempGraph = new Map(graph);
+      const tempConnectedComponents = tempGraph.get(component);
+      const tempConnectedComponentIndex = tempConnectedComponents.indexOf(connectedComponent);
 
-      if (countGroups() > initialGroupsCount) {
+      // Disconnect the component and check if the number of groups increases
+      tempConnectedComponents.splice(tempConnectedComponentIndex, 1);
+      tempGraph.get(connectedComponent).splice(tempGraph.get(connectedComponent).indexOf(component), 1);
+
+      if (countGroups(tempGraph) > initialGroupsCount) {
         componentsToDisconnect.push([component, connectedComponent]);
       }
-
-      // Reconnect the components for the next iteration
-      graph.get(component).push(connectedComponent);
-      graph.get(connectedComponent).push(component);
     });
   });
 
   console.log('Components to disconnect:', componentsToDisconnect);
 }
 
-// Call the function when the page loads
-window.onload = findDisconnectedGroups;
+  window.onload = findDisconnectedGroups;
 
-  /*
-    <canvas id="can1"></canvas>
-  <script>
-    const c1 = document.getElementById('can1');
-    const ct1 = c1.getContext('2d');
-
-    // Set canvas dimensions
-    c1.width = 700;
-    c1.height = 3900;
-
-
-ct1.font = '16px Arial'; // Set your desired font and size
-ct1.fillStyle = 'black'; // Set your desired text color
-
-*/
 </script>
-
 </body>
 </html>
