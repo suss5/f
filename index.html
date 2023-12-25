@@ -1,7 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disconnected Groups</title>
+</head>
 <body>
-  <canvas id="can1"></canvas>
+
+<script>
+function findDisconnectedGroups() {
+  // Hardcoded input data (replace this with your actual input)
+  const input = `
+    jqt: rhn xhk nvd
+    rsh: frs pzl lsr
+    xhk: hfx
+    cmg: qnr nvd lhk bvb
+    rhn: xhk bvb hfx
+    bvb: xhk hfx
+    pzl: lsr hfx nvd
+    qnr: nvd
+    ntq: jqt hfx bvb xhk
+    nvd: lhk
+    lsr: lhk
+    rzs: qnr cmg lsr rsh
+    frs: qnr lhk lsr
+  `;
+  
+  const connections = input.trim().split('\n');
+  const graph = new Map();
+
+  // Build the graph
+  connections.forEach(connection => {
+    const [component, connectedComponents] = connection.split(':').map(str => str.trim());
+    graph.set(component, connectedComponents.split(' '));
+  });
+
+  function getConnectedComponents(component) {
+    const visited = new Set();
+    const queue = [component];
+
+    while (queue.length > 0) {
+      const currentComponent = queue.shift();
+
+      if (!visited.has(currentComponent)) {
+        visited.add(currentComponent);
+        queue.push(...graph.get(currentComponent) || []);
+      }
+    }
+
+    return visited;
+  }
+
+  function countGroups() {
+    const visited = new Set();
+    let groupsCount = 0;
+
+    graph.forEach((_, component) => {
+      if (!visited.has(component)) {
+        const connectedComponents = getConnectedComponents(component);
+        visited.add(...connectedComponents);
+
+        groupsCount++;
+      }
+    });
+
+    return groupsCount;
+  }
+
+  // Find the components to disconnect
+  const initialGroupsCount = countGroups();
+  const componentsToDisconnect = [];
+
+  graph.forEach((connectedComponents, component) => {
+    connectedComponents.forEach(connectedComponent => {
+      // Disconnect the component and check if the number of groups increases
+      graph.get(component).splice(graph.get(component).indexOf(connectedComponent), 1);
+      graph.get(connectedComponent).splice(graph.get(connectedComponent).indexOf(component), 1);
+
+      if (countGroups() > initialGroupsCount) {
+        componentsToDisconnect.push([component, connectedComponent]);
+      }
+
+      // Reconnect the components for the next iteration
+      graph.get(component).push(connectedComponent);
+      graph.get(connectedComponent).push(component);
+    });
+  });
+
+  console.log('Components to disconnect:', componentsToDisconnect);
+}
+
+// Call the function when the page loads
+window.onload = findDisconnectedGroups;
+
+  /*
+    <canvas id="can1"></canvas>
   <script>
     const c1 = document.getElementById('can1');
     const ct1 = c1.getContext('2d');
@@ -9,40 +102,13 @@
     // Set canvas dimensions
     c1.width = 700;
     c1.height = 3900;
-var name=prompt("Enter prompt")
-  
 
-function drawMultiLineText(context, text, x, y, maxWidth, lineHeight) {
-  const words = text.split(' ');
-  let line = '';
 
-  for (let i = 0; i < words.length; i++) {
-    const testLine = line + words[i] + ' ';
-    const metrics = context.measureText(testLine);
-    const testWidth = metrics.width;
-
-    if (testWidth > maxWidth && i > 0) {
-      context.fillText(line, x, y);
-      line = words[i] + ' ';
-      y += lineHeight;
-    } else {
-      line = testLine;
-    }
-  }
-
-  context.fillText(line, x, y);
-}
-
-const myString = "Britney's on the brink as never before. Following the bombshell announcement bla blah are divorcing, sources say Britney is deeply unwell, according to an inside source, is blah blah for leaving her daughter in such a precarious state and is now desperate for Britney to move in with her.. This is a sample text that needs to be split into multiple lines and it could be longer than this even, but who knows";
-const xPosition = 0;
-const yPosition = 100;
-const lineHeight = 20; // Adjust this value based on your font size
-const maxWidth=600
 ct1.font = '16px Arial'; // Set your desired font and size
 ct1.fillStyle = 'black'; // Set your desired text color
 
-drawMultiLineText(ct1, myString, xPosition, yPosition, maxWidth, lineHeight);
+*/
+</script>
 
-  </script>
-  </body>
+</body>
 </html>
