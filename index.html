@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-
 <script>
-
 function findDisconnectedGroups() {
   // Hardcoded input data (replace this with your actual input)
   const input = `
@@ -63,22 +61,26 @@ function findDisconnectedGroups() {
     return groupsCount;
   }
 
+  function disconnectIncreasesGroups(component1, component2) {
+    const tempGraph = new Map(graph);
+    const tempConnectedComponents1 = tempGraph.get(component1);
+    const tempConnectedComponents2 = tempGraph.get(component2);
+
+    // Disconnect the components
+    tempConnectedComponents1.splice(tempConnectedComponents1.indexOf(component2), 1);
+    tempConnectedComponents2.splice(tempConnectedComponents2.indexOf(component1), 1);
+
+    // Check if the number of groups increases
+    return countGroups(tempGraph) > initialGroupsCount;
+  }
+
   // Find the components to disconnect
   const initialGroupsCount = countGroups();
   const componentsToDisconnect = [];
 
   graph.forEach((connectedComponents, component) => {
     connectedComponents.forEach(connectedComponent => {
-      // Create copies of the graph for the iteration
-      const tempGraph = new Map(graph);
-      const tempConnectedComponents = tempGraph.get(component);
-      const tempConnectedComponentIndex = tempConnectedComponents.indexOf(connectedComponent);
-
-      // Disconnect the component and check if the number of groups increases
-      tempConnectedComponents.splice(tempConnectedComponentIndex, 1);
-      tempGraph.get(connectedComponent).splice(tempGraph.get(connectedComponent).indexOf(component), 1);
-
-      if (countGroups(tempGraph) > initialGroupsCount) {
+      if (disconnectIncreasesGroups(component, connectedComponent)) {
         componentsToDisconnect.push([component, connectedComponent]);
       }
     });
@@ -86,9 +88,7 @@ function findDisconnectedGroups() {
 
   console.log('Components to disconnect:', componentsToDisconnect);
 }
-
-  window.onload = findDisconnectedGroups;
-
+window.onload = findDisconnectedGroups;
 </script>
 </body>
 </html>
