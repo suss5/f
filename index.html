@@ -13,8 +13,8 @@ for (n=0; n<10000; n++){
 
     
 function throwFunc() {
-    if (Math.random()>= 0.01) {
-        v = v * 1.01;
+    if (Math.random()>= .5) {
+        v = v * 2;
         high+=1
         throwFunc();
     } else {
