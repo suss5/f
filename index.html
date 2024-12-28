@@ -1,1 +1,23 @@
+<!DOCTYPE html>
+<html>
 
+<body>
+<script>
+var v = 1;
+var x=0
+
+function throwFunc() {
+    x = Math.random();
+    if (x >= 0.01) {
+        v = v * 1.01;
+        throwFunc();  // Recursively call throwFunc
+    } else {
+        alert(v);  // Alert the value when x < 0.01
+    }
+}
+
+throwFunc();  // Start the function
+</script>
+</body>
+
+</html>
