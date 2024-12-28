@@ -3,13 +3,13 @@
 
 <body>
 <script>
-var v,x,tot=0
+var v,x,tot=0,low=0
     
 for (n=0; n<10000; n++){
     v=1
     throwFunc()
 }
-    alert(n+' runs gives mean '+tot/10000)
+    alert(n+' had lows= '+low+' giving mean '+tot/10000)
 
     
 function throwFunc() {
@@ -18,6 +18,7 @@ function throwFunc() {
         throwFunc();
     } else {
         tot+=v;
+        low+=1
     }
 }
 
