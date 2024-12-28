@@ -5,20 +5,19 @@
 <script>
 var v,x,tot=0
     
-for (n=0; n<1000; n++){
+for (n=0; n<5000; n++){
     v=1
     throwFunc()
 }
-    alert(n+' runs gives mean '+tot/1000)
+    alert(n+' runs gives mean '+tot/5000)
 
     
 function throwFunc() {
-    x = Math.random();
-    if (x >= 0.01) {
+    if (Math.random()>= 0.01) {
         v = v * 1.01;
-        throwFunc();  // Recursively call throwFunc
+        throwFunc();
     } else {
-        tot+=v;  // Alert the value when x < 0.01
+        tot+=v;
     }
 }
 
