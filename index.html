@@ -3,18 +3,19 @@
 
 <body>
 <script>
-var v,x,tot=0,low=0
+var v,x,tot=0,low=0,high=0
     
 for (n=0; n<10000; n++){
     v=1
     throwFunc()
 }
-    alert(n+' had lows= '+low+' giving mean '+tot/10000)
+    alert(n+' had lows='+low+' high='+high+' *giving mean '+tot/10000)
 
     
 function throwFunc() {
     if (Math.random()>= 0.01) {
         v = v * 1.01;
+        high+=1
         throwFunc();
     } else {
         tot+=v;
