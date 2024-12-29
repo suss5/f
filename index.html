@@ -9,17 +9,17 @@ for (n=0; n<10000; n++){
     v=1
     throwFunc()
 }
-    alert(n+' had lows='+low+' high='+high+' *giving mean '+tot/10000)
+    alert(n+' high='+high+' *giving mean '+tot/10000)
 
     
 function throwFunc() {
-    if (Math.random()>= .5) {
-        v = v * 2;
+    if (Math.random()>= .1) {
+        v = v * 1.1;
         high+=1
         throwFunc();
     } else {
         tot+=v;
-        low+=1
+       // low+=1
     }
 }
 
