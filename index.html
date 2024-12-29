@@ -3,13 +3,13 @@
 
 <body>
 <script>
-var v,x,tot=0,low=0,high=0
+var v,x,tot=0,low=0,high=0, higest=0
     
 for (n=0; n<100000; n++){
     v=1
     throwFunc()
 }
-    alert(n+' high='+high+' *giving mean '+tot/100000)
+    alert(n+' h='+high+' highest='+highest+' *giving mean '+tot/100000)
 
     
 function throwFunc() {
@@ -19,7 +19,7 @@ function throwFunc() {
         throwFunc();
     } else {
         tot+=v;
-       // low+=1
+       if(v>highest){highest=v}
     }
 }
 
